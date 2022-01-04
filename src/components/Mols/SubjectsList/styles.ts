@@ -20,7 +20,7 @@ export const Content = styled.section<SubjectsContainerProps>`
 
   @media (max-width: 768px) {
     margin-top: 0;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
   };
 
   ${(props) => props.isLoading && css`

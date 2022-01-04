@@ -6,7 +6,7 @@ import { Container, StyledButton } from './styles';
 
 export const DropdownMenu = ({
   isLoading = false,
-}): JSX.Element => {
+}: DropdownMenuProps): JSX.Element => {
 
 const [open, setOpen] = useState(false);
 
@@ -14,7 +14,7 @@ const [open, setOpen] = useState(false);
     <Container>
       <FaEllipsisV onClick={() => setOpen((state) => !state)} size={22} />
       <ul className={`options ${open ? 'menu-visible' : ''}`}>
-        <StyledButton className="student-doubt">
+        <StyledButton type="button" className="student-doubt" disabled={isLoading}>
           <li>{isLoading ? 'Carregando...' : ''}</li>
         </StyledButton>
       </ul>

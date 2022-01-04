@@ -9,10 +9,8 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
+  overflow: hidden;
 
-    @media (min-width: 1024px) {
-    margin-top: 1rem;
-  }
 `;
 
 export const TimerContainer = styled.div<ContainerProps>`

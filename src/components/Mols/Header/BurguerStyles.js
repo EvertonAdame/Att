@@ -51,6 +51,13 @@ export const Ul = styled.ul`
       align-items:center;
     }
   }
+
+  .wrapper-two {
+     @media (min-width: 769px) {
+      display: flex;
+      align-items:center;
+    }
+  }
   
   li {
     text-align: right;
@@ -78,12 +85,12 @@ export const Ul = styled.ul`
       border-bottom: 1px solid white;
       padding-right: .5rem;
       padding: 1rem;
-      
+      text-align: -webkit-right;
     }
   }
   @media (min-width: 769px) {
    
-    padding: 1rem 5rem;
+    padding: 0.5rem 5rem;
     
   }
   
@@ -135,7 +142,18 @@ export const DrescriptionContainer = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   justify-content: right;
+  margin-right: 0.3rem;
 `;
 export const CarteiraContainer = styled.div`
- 
+  padding: 0.5rem;
+  background: rgb(2,0,36);
+background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(2,219,52,1) 0%);
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  width: 50%;
+  @media(min-width: 769px) {
+    margin-right: 2rem;
+    width: 90%
+  }
 `;

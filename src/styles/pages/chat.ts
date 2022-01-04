@@ -11,7 +11,7 @@ export const Container = styled.div`
 
   @media(min-width: 1180px){
    width: 91vw;
-   padding-left: 5rem;
+   padding-left: 7rem;
    
   }
 `;
