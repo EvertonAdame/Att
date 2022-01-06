@@ -298,7 +298,7 @@ export const MyChat = ({ doubtInfo }: MyChatProps): JSX.Element => {
 
                   {user.profileId !== 'Teacher' && (
                     <>
-                      {getTimeLeft}
+                      <p>{getTimeLeft}</p>
                       {/* <Tooltip title="Com base na sua quantidade de créditos, esse é o tempo restante que você tem de atendimento.">
                         <FaQuestionCircle size={16} />
                       </Tooltip> */}
