@@ -15,6 +15,8 @@ import { DropdownMenu } from '../../Atoms/DropdownMenu';
 import {
   Container, ChatHeader, UserInfoContainer, TimerContainer, EndDoubtButton, ImgChamadaVideo
 } from './styles';
+import { useCountdown } from 'hooks/countdown';
+
 
 type HeadingProps = {
   doubtInfo: DoubtInfoDTO;
