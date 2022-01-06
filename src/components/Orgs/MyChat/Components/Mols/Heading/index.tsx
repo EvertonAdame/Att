@@ -1,15 +1,12 @@
 import {
   useEffect, useState, useMemo, memo,
 } from 'react';
-import { FaQuestionCircle } from 'react-icons/fa';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { DoubtInfoDTO } from 'types/dtos/subjectDTOS';
 import { useAuth } from 'hooks/auth';
 import { useChat } from 'hooks/chat';
-import { useCountdown } from 'hooks/countdown';
 import { useDoubt } from 'hooks/doubts';
-import { convertSecondsToHourMinuteSecond } from 'utils/functions';
 import { BackButton } from 'components/Atoms/BackButton';
 import { Tooltip } from 'components/Atoms/Tooltip';
 import { UserStatus } from 'components/Atoms/UserStatus';
@@ -71,23 +68,6 @@ export const Heading = memo(
       console.log('buy more credits function');
     };
 
-    const getTimeLeft = useMemo(() => {
-      const estimatedAttendenceTime = Math.floor(
-        user.wallet.balance / doubtInfo.teacher_subject.price,
-      );
-      const timeToEnd = ((estimatedAttendenceTime * 60) - (stopWatchTime ?? 0)) < 0 ? 0
-        : (estimatedAttendenceTime * 60) - (stopWatchTime ?? 0);
-
-      const timeLabel = convertSecondsToHourMinuteSecond(timeToEnd, { onlyHoursNMinutes: true });
-
-      return (
-        <p className={`${timeToEnd <= 120 ? 'danger' : ''}`}>
-          {timeLabel !== 'xx' ? 'Voce ainda tem' : 'Seu tempo acabou'}
-          {' '}
-          {timeLabel !== 'xx' ? timeLabel : ''}
-        </p>
-      );
-    }, [stopWatchTime, doubtInfo.teacher_subject.price, user.wallet.balance]);
 
     useEffect(() => {
       if (recievedMessage.type === 'availability_changed') {

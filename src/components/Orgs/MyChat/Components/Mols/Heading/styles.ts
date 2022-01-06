@@ -168,36 +168,7 @@ export const TimerContainer = styled.div`
     width: 20%;
   }
 
-  .time-info{
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-
-    .time-left-row{
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      font-size: 0.86rem;
-      text-align: left;
-
-      svg{
-        margin-left: 0.5rem;
-      }
-    }
-
-    @keyframes mymove {
-      0% {color: var(--white);}
-      50% {color: var(--danger);}
-    }
-
-    .danger{
-      animation: mymove 0.8s infinite;
-    }
-  }
+  
 `;
 
 export const EndDoubtButton = styled.div`
