@@ -20,8 +20,8 @@ export const List = styled.div`
   display: flex;
   flex-direction: column;
   width: 28%;
-  height: 100%;
-  min-height: 420px;
+  max-height: 500px;
+  min-height: 450px;
   align-items: center;
   border-radius: 0.25rem;
   margin: 1.8rem;

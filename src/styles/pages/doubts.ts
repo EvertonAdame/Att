@@ -6,9 +6,11 @@ export const Container = styled.div`
   flex-direction: column;
   width: 100%;
   margin-top: 0.5rem;
-
+  height: 100%;
+  
   @media (max-width: 768px) {
     margin-top: 0;
+    overflow: hidden;
   }
 `;
 
@@ -16,6 +18,7 @@ export const Content = styled.section`
   display: flex;
   flex-direction: column;
   width: 100%;
+  max-height: 100%;
   padding: 1.3rem 5rem;
   
   @media screen and (max-width:768px) {
@@ -28,8 +31,8 @@ export const Heading = styled.header`
   flex-direction: column;
   width: 100%;
   margin-bottom: 2rem;
-flex-direction: row;
-    align-items: center;
+  flex-direction: row;
+  align-items: center;
   @media screen and (max-width: 768px) {
    
     

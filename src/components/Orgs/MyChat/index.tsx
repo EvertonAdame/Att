@@ -7,44 +7,39 @@ import { FaQuestionCircle } from 'react-icons/fa';
 import { useChat } from 'hooks/chat';
 import { useAuth } from 'hooks/auth';
 import { useCountdown } from 'hooks/countdown';
-import { convertSecondsToHourMinuteSecond } from 'utils/functions';
+import { Tooltip } from 'components/Atoms/Tooltip';
 import { api } from 'services/apiClient';
 import { ChatMsgDTO } from 'types/dtos/chatDTO';
 import { convertTimeStampToTimeLog } from 'utils/functions';
 import { DoubtInfoDTO } from 'types/dtos/subjectDTOS';
-import { Tooltip } from 'components/Atoms/Tooltip';
+import { convertSecondsToHourMinuteSecond } from 'utils/functions';
 import { Loading } from 'components/Atoms/Loading';
+
 import { Message } from './Components/Atoms/Message';
+
 import { Heading } from './Components/Mols/Heading';
 import { ChatActions } from './Components/Mols/ChatActions';
 
-import {
-  Container, ChatContainer, MessagesBox, TimerContainer
-} from './styles';
+import { Container, ChatContainer, MessagesBox } from './styles';
 
 type Query = {
   doubtid: string;
-}
+};
 
 type MyChatProps = {
   doubtInfo: DoubtInfoDTO;
-  opacity?: boolean;
-}
+};
 
-export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
+export const MyChat = ({ doubtInfo }: MyChatProps): JSX.Element => {
   const [messages, setMessages] = useState<ChatMsgDTO>();
   const [imgUrl, setImgUrl] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [localLoading, setLocalLoading] = useState(false);
-  const {
-    formatedStopwatchTime,
-    stopWatchTime,
-    handleSetStopwatchValue,
-    handleSetCountdownValue,
-    toggleCountdown,
-  } = useCountdown();
 
-  const isChatDisabled = useMemo(() => doubtInfo.status === 'Completed', [doubtInfo]);
+  const isChatDisabled = useMemo(
+    () => doubtInfo.status === 'Completed',
+    [doubtInfo],
+  );
 
   const { query, push } = useRouter();
   const {
@@ -58,7 +53,8 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
     handleSetChatPage,
   } = useChat();
   const { user } = useAuth();
-
+  const { toggleCountdown, formatedStopwatchTime, stopWatchTime } =
+    useCountdown();
 
   const { doubtid } = query as Query;
 
@@ -67,7 +63,8 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
       const messageBox = document.getElementById('messageBox');
 
       if (messageBox) {
-        messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;
+        messageBox.scrollTop =
+          messageBox.scrollHeight - messageBox.clientHeight;
       }
     } else {
       const messageBox = document.getElementById('messageBox');
@@ -80,7 +77,9 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
 
   const handleOpenMeets = async (): Promise<void> => {
     setLocalLoading(true);
-    const response = await api.get<string>(`/doubt/teacher/videoconf?user_id=${user.userId}&doubt_id=${doubtInfo.doubt_id}`);
+    const response = await api.get<string>(
+      `/doubt/teacher/videoconf?user_id=${user.userId}&doubt_id=${doubtInfo.doubt_id}`,
+    );
 
     if (messages) {
       const updatedMessages = { ...messages };
@@ -135,7 +134,7 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
           'already_viewed',
           doubtid,
         );
-      }, (550));
+      }, 550);
       handleSetChatPage(res.timestamp);
 
       // console.log(res);
@@ -149,11 +148,13 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
 
   useEffect(() => {
     const messageBox = document.getElementById('messageBox');
-
     // eslint-disable-next-line max-len
-    const isBottom = messageBox && (messageBox?.scrollHeight - (messageBox?.scrollTop + messageBox?.offsetHeight) > 30);
+    const isBottom =
+      messageBox &&
+      messageBox?.scrollHeight -
+        (messageBox?.scrollTop + messageBox?.offsetHeight) <
+        10;
 
-    
     if (recievedMessage.type === 'chat_message') {
       setTimeout(() => {
         sendGenericChatWsMessage(
@@ -192,7 +193,10 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
       }
     }
 
-    if (recievedMessage.type === 'changed_doubt_status' && recievedMessage.status === 'Completed') {
+    if (
+      recievedMessage.type === 'changed_doubt_status' &&
+      recievedMessage.status === 'Completed'
+    ) {
       push(`/rating/${doubtid}`);
     }
     resetRecievedMessage();
@@ -224,29 +228,29 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
       intersectionObserver.observe(sentinela);
     }
     return () => intersectionObserver.disconnect();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages, lastChatPage, handleSetChatPage]);
 
   const getTimeLeft = useMemo(() => {
     const estimatedAttendenceTime = Math.floor(
       user.wallet.balance / doubtInfo.teacher_subject.price,
     );
-    const timeToEnd = ((estimatedAttendenceTime * 60) - (stopWatchTime ?? 0)) < 0 ? 0
-      : (estimatedAttendenceTime * 60) - (stopWatchTime ?? 0);
+    const timeToEnd =
+      estimatedAttendenceTime * 60 - (stopWatchTime ?? 0) < 0
+        ? 0
+        : estimatedAttendenceTime * 60 - (stopWatchTime ?? 0);
 
-    const timeLabel = convertSecondsToHourMinuteSecond(timeToEnd, { onlyHoursNMinutes: true });
+    const timeLabel = convertSecondsToHourMinuteSecond(timeToEnd, {
+      onlyHoursNMinutes: true,
+    });
 
     return (
       <p className={`${timeToEnd <= 120 ? 'danger' : ''}`}>
-        {timeLabel !== 'xx' ? 'Voce ainda tem' : 'Seu tempo acabou'}
-        {' '}
+        {timeLabel !== 'xx' ? 'Voce ainda tem' : 'Seu tempo acabou'}{' '}
         {timeLabel !== 'xx' ? timeLabel : ''}
       </p>
     );
   }, [stopWatchTime, doubtInfo.teacher_subject.price, user.wallet.balance]);
-
-
-  
 
   return (
     <Container>
@@ -256,59 +260,62 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
         handleOpenMeets={handleOpenMeets}
       />
       <ChatContainer>
-        <MessagesBox 
+        <MessagesBox
           className={`hasVerticalScroll ${isLoading ? 'loading' : ''}`}
           id="messageBox"
         >
-          {isLoading && (
-            <Loading className="loading" size={2} />
-          )}
+          {isLoading && <Loading className="loading" size={2} />}
           <li id="sentinela" />
-          {messages && messages.messages.map((item) => (
-            <Message 
-              mine={item.sender_id === user.userId}
-              read={item.already_viewed === 'true' || item.already_viewed === true}
-              message={item.message}
-              image={item.file_url}
-              timeStamp={convertTimeStampToTimeLog(item.timestamp)}
-              key={item.timestamp}
-            />
-          ))}
-        
-
-          <TimerContainer opacity={opacity} className={`${user.profileId === 'Teacher' ? 'teacher' : ''}`} >
-          <div id="sentinela-button" className={`isTyping ${isTyping ? 'typing' : 'not-typing'} ${recievedMessage.user_id === user.userId ? 'me' : ''}`}>
-            <Loading type="ellipsis" size={1} />
-          </div>
-          <div className="space-container">
-              <div className="time-info" >
-                <div className="time-left-row time-oneOf">
-                  <p>{formatedStopwatchTime}</p>
-                  <Tooltip title="Tempo corrido desde o inicio do atendimento.">
-                    <FaQuestionCircle size={16} />
-                  </Tooltip>
-                </div>
+          {messages &&
+            messages.messages.map((item) => (
+              <Message
+                mine={item.sender_id === user.userId}
+                read={
+                  item.already_viewed === 'true' || item.already_viewed === true
+                }
+                message={item.message}
+                image={item.file_url}
+                timeStamp={convertTimeStampToTimeLog(item.timestamp)}
+                key={item.timestamp}
+              />
+            ))}
+          <div className="time--sentinela__wrapper">
+            <div
+              id="sentinela-bottom"
+              className={`isTyping ${isTyping ? 'typing' : 'not-typing'} ${
+                recievedMessage.user_id === user.userId ? 'me' : ''
+              }`}
+            >
+              <Loading type="ellipsis" size={1} />
+            </div>
+            <div className="time-wrapper">
+              <div className="time-info">
                 <div className="time-left-row">
+                  <p>{formatedStopwatchTime}</p>
+                  {/* <Tooltip title="Tempo corrido desde o inicio do atendimento.">
+                    <FaQuestionCircle size={16} />
+                  </Tooltip> */}
+
                   {user.profileId !== 'Teacher' && (
-                  <>
-                    {getTimeLeft}
-                    <Tooltip title="Com base na sua quantidade de créditos, esse é o tempo restante que você tem de atendimento.">
-                      <FaQuestionCircle size={16} />
-                    </Tooltip>
-                  </>
+                    <>
+                      {getTimeLeft}
+                      {/* <Tooltip title="Com base na sua quantidade de créditos, esse é o tempo restante que você tem de atendimento.">
+                        <FaQuestionCircle size={16} />
+                      </Tooltip> */}
+                    </>
                   )}
                 </div>
+                <Image
+                  src="/assets/svgs/relogio.svg"
+                  width={40}
+                  height={40}
+                  layout="fixed"
+                  objectFit="contain"
+                  className="test"
+                />
+              </div>
             </div>
-             <Image
-                src="/assets/svgs/relogio.svg"
-                width={40}
-                height={40}
-                layout="fixed"
-                objectFit="contain"
-                className="test"
-              />
           </div>
-       </TimerContainer>
         </MessagesBox>
         {imgUrl && (
           <div className="image-preview-wrapper">
@@ -342,7 +349,6 @@ export const MyChat = ({ doubtInfo, opacity }: MyChatProps): JSX.Element => {
           />
         )}
       </ChatContainer>
-      
     </Container>
   );
 };

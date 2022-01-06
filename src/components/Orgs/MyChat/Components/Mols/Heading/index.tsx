@@ -149,41 +149,12 @@ export const Heading = memo(
               ) : (
                 <ImgChamadaVideo 
                   src="/assets/svgs/videocam.svg"
-                
                   onClick={handleOpenMeets}
                 />
               )}
             </div>
             )}
-            <TimerContainer className={`${user.profileId === 'Teacher' ? 'teacher' : ''}`}>
-              <Image
-                src="/assets/svgs/relogio.svg"
-                width={40}
-                height={40}
-                layout="fixed"
-                objectFit="contain"
-                className="test"
-              />
-              <div className="time-info">
-                <div className="time-left-row">
-                  <p>{formatedStopwatchTime}</p>
-                  <Tooltip title="Tempo corrido desde o inicio do atendimento.">
-                    <FaQuestionCircle size={16} />
-                  </Tooltip>
-                </div>
-                <div className="time-left-row">
-                  {user.profileId !== 'Teacher' && (
-                  <>
-                    {getTimeLeft}
-                    <Tooltip title="Com base na sua quantidade de créditos, esse é o tempo restante que você tem de atendimento.">
-                      <FaQuestionCircle size={16} />
-                    </Tooltip>
-                  </>
-                  )}
-
-                </div>
-              </div>
-            </TimerContainer>
+     
             <DropdownMenu
               buyMoreCredits={buyMoreCredits}
               isLoading={buttonIsLoading}

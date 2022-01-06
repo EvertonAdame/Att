@@ -8,9 +8,7 @@ interface OpenChatButtonProps {
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
-
   padding: 1.8rem 5rem;
-
   width: 100%;
   height: 80%;
 `;
