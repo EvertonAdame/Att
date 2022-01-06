@@ -87,7 +87,7 @@ export const MessagesBox = styled.div`
  
       align-items: center;
       justify-content: space-between;
-      width: 100%;
+   
       font-size: 0.86rem;
       text-align: right;
       margin-right: 1rem;
